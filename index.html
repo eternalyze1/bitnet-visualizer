@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BitNet Visualizer — Activation Heatmap</title>
+  <script defer crossorigin src="./assets/index.e5gNoJl3.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/style-C3HRKwAq.css">
+</head>
+<body>
+  <header>
+    <h1>BitNet Visualizer</h1>
+    <span class="badge">WebGPU</span>
+    <span class="badge model-size" id="model-size-badge">—</span>
+  </header>
+
+  <div id="error-banner" style="display:none"></div>
+
+  <div id="status-bar">
+    <span id="status-text">Ready</span>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div id="load-section">
+    <h2>Load a BitNet Model</h2>
+    <p>Enter a GGUF model URL or use the default.</p>
+    <input type="text" id="model-url"
+      value="https://huggingface.co/microsoft/bitnet-b1.58-2B-4T-gguf/resolve/main/ggml-model-i2_s.gguf"
+      placeholder="https://huggingface.co/.../model.gguf" />
+    <div id="cached-models"></div>
+    <button id="load-btn">Load Model</button>
+  </div>
+
+  <div id="app" style="display:none">
+    <div id="sidebar">
+      <div id="prompt-section">
+        <h3>Prompt</h3>
+        <textarea id="prompt-input" rows="3" placeholder="Enter text to visualize...">The meaning of life is</textarea>
+        <button id="visualize-btn">Visualize Activations</button>
+      </div>
+      <div id="controls">
+        <h3>Display</h3>
+        <label>
+          <span>Token:</span>
+          <select id="token-select"></select>
+        </label>
+        <label>
+          <span>Downsample:</span>
+          <select id="downsample-select">
+            <option value="1" selected>1x (full)</option>
+            <option value="2">2x</option>
+            <option value="4">4x</option>
+            <option value="8">8x</option>
+            <option value="16">16x</option>
+            <option value="32">32x</option>
+            <option value="64">64x</option>
+          </select>
+        </label>
+        <label>
+          <span>Sort layers:</span>
+          <select id="sort-select">
+            <option value="normal">Default order</option>
+            <option value="norm">By L2 norm</option>
+          </select>
+        </label>
+        <label id="contrast-label">
+          <input type="checkbox" id="contrast-toggle" checked />
+          <span>Sqrt contrast</span>
+        </label>
+      </div>
+      <div id="stats-panel">
+        <h3>Stats</h3>
+        <div id="stats-content">No data</div>
+      </div>
+    </div>
+
+    <div id="main-area">
+      <div id="output-section">
+        <h3>Generated Text</h3>
+        <div id="output"></div>
+      </div>
+      <div id="heatmap-section">
+        <h3>Activations <span id="axis-label-dims" class="axis-label">Dimensions →</span> <span id="axis-label-layers" class="axis-label">Layers ↓</span></h3>
+        <div id="heatmap-container">
+          <canvas id="heatmap-canvas"></canvas>
+          <div id="heatmap-legend">
+            <span>−max</span>
+            <div id="legend-gradient"></div>
+            <span>+max</span>
+          </div>
+        </div>
+        <div id="layer-labels"></div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
